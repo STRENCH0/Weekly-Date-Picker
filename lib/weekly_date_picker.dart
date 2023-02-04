@@ -5,25 +5,25 @@ import 'package:week_of_year/week_of_year.dart';
 import "package:weekly_date_picker/datetime_apis.dart";
 
 class WeeklyDatePicker extends StatefulWidget {
-  WeeklyDatePicker({
-    Key? key,
-    required this.selectedDay,
-    required this.changeDay,
-    this.weekdayText = 'Week',
-    this.weekdays = const ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    this.backgroundColor = const Color(0xFFFAFAFA),
-    this.selectedDigitBackgroundColor = const Color(0xFF2A2859),
+  WeeklyDatePicker(
+      {Key? key,
+      required this.selectedDay,
+      required this.changeDay,
+      this.weekdayText = 'Week',
+      this.weekdays = const ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      this.backgroundColor = const Color(0xFFFAFAFA),
+      this.selectedDigitBackgroundColor = const Color(0xFF2A2859),
     this.selectedDigitBorderColor =
         const Color(0x00000000), // Transparent color
-    this.selectedDigitColor = const Color(0xFFFFFFFF),
-    this.digitsColor = const Color(0xFF000000),
-    this.weekdayTextColor = const Color(0xFF303030),
-    this.enableWeeknumberText = true,
-    this.weeknumberColor = const Color(0xFFB2F5FE),
-    this.weeknumberTextColor = const Color(0xFF000000),
-    this.daysInWeek = 7,
-  })  : assert(weekdays.length == daysInWeek,
-            "weekdays must be of length $daysInWeek"),
+      this.selectedDigitColor = const Color(0xFFFFFFFF),
+      this.digitsColor = const Color(0xFF000000),
+      this.weekdayTextColor = const Color(0xFF303030),
+      this.enableWeeknumberText = true,
+      this.weeknumberColor = const Color(0xFFB2F5FE),
+      this.weeknumberTextColor = const Color(0xFF000000),
+      this.daysInWeek = 7,
+      this.onSwipe})
+      : assert(weekdays.length == daysInWeek, "weekdays must be of length $daysInWeek"),
         super(key: key);
 
   /// The current selected day
@@ -31,6 +31,8 @@ class WeeklyDatePicker extends StatefulWidget {
 
   /// Callback function with the new selected date
   final Function(DateTime) changeDay;
+
+  final void Function(DateTimeRange)? onSwipe;
 
   /// Specifies the weekday text: default is 'Week'
   final String weekdayText;
@@ -121,6 +123,11 @@ class _WeeklyDatePickerState extends State<WeeklyDatePicker> {
                   _weeknumberInSwipe = _initialSelectedDay
                       .addDays(7 * (index - _weekIndexOffset))
                       .weekOfYear;
+                  if (widget.onSwipe != null) {
+                    var start = currentSwipedDate.subtract(Duration(days: currentSwipedDate.weekday - 1));
+                    var end = start.add(Duration(days: widget.daysInWeek - 1));
+                    widget.onSwipe?.call(DateTimeRange(start: start, end: end));
+                  }
                 });
               },
               scrollDirection: Axis.horizontal,
@@ -167,30 +174,22 @@ class _WeeklyDatePickerState extends State<WeeklyDatePicker> {
                 padding: EdgeInsets.only(bottom: 4.0),
                 child: Text(
                   '$weekday',
-                  style:
-                      TextStyle(fontSize: 12.0, color: widget.weekdayTextColor),
+                  style: TextStyle(fontSize: 12.0, color: widget.weekdayTextColor),
                 ),
               ),
               Container(
                 padding: const EdgeInsets.all(1.0),
                 decoration: BoxDecoration(
                     // Border around today's date
-                    color: isTodaysDate
-                        ? widget.selectedDigitBorderColor
-                        : Colors.transparent,
+                    color: isTodaysDate ? widget.selectedDigitBorderColor : Colors.transparent,
                     shape: BoxShape.circle),
                 child: CircleAvatar(
-                  backgroundColor: isSelected
-                      ? widget.selectedDigitBackgroundColor
-                      : widget.backgroundColor,
+                  backgroundColor: isSelected ? widget.selectedDigitBackgroundColor : widget.backgroundColor,
                   radius: 14.0,
                   child: Text(
                     '${dateTime.day}',
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        color: isSelected
-                            ? widget.selectedDigitColor
-                            : widget.digitsColor),
+                    style:
+                        TextStyle(fontSize: 16.0, color: isSelected ? widget.selectedDigitColor : widget.digitsColor),
                   ),
                 ),
               ),
