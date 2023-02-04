@@ -45,6 +45,9 @@ class _MyHomePageState extends State<MyHomePage> {
             changeDay: (value) => setState(() {
               _selectedDay = value;
             }),
+            onSwipe: (dateRange) {
+              print(dateRange);
+            },
             enableWeeknumberText: false,
             weeknumberColor: const Color(0xFF57AF87),
             weeknumberTextColor: Colors.white,
