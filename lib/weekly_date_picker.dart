@@ -120,9 +120,8 @@ class _WeeklyDatePickerState extends State<WeeklyDatePicker> {
               controller: _controller,
               onPageChanged: (int index) {
                 setState(() {
-                  _weeknumberInSwipe = _initialSelectedDay
-                      .addDays(7 * (index - _weekIndexOffset))
-                      .weekOfYear;
+                  var currentSwipedDate = _initialSelectedDay.addDays(7 * (index - _weekIndexOffset));
+                  _weeknumberInSwipe = currentSwipedDate.weekOfYear;
                   if (widget.onSwipe != null) {
                     var start = currentSwipedDate.subtract(Duration(days: currentSwipedDate.weekday - 1));
                     var end = start.add(Duration(days: widget.daysInWeek - 1));
