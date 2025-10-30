@@ -120,9 +120,8 @@ class _WeeklyDatePickerState extends State<WeeklyDatePicker> {
               controller: _controller,
               onPageChanged: (int index) {
                 setState(() {
-                  _weeknumberInSwipe = _initialSelectedDay
-                      .addDays(7 * (index - _weekIndexOffset))
-                      .weekOfYear;
+                  var currentSwipedDate = _initialSelectedDay.addDays(7 * (index - _weekIndexOffset));
+                  _weeknumberInSwipe = currentSwipedDate.weekOfYear;
                   if (widget.onSwipe != null) {
                     var start = currentSwipedDate.subtract(Duration(days: currentSwipedDate.weekday - 1));
                     var end = start.add(Duration(days: widget.daysInWeek - 1));
@@ -170,26 +169,30 @@ class _WeeklyDatePickerState extends State<WeeklyDatePicker> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 4.0),
-                child: Text(
-                  '$weekday',
-                  style: TextStyle(fontSize: 12.0, color: widget.weekdayTextColor),
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: Text(
+                    '$weekday',
+                    style: TextStyle(fontSize: 12.0, color: widget.weekdayTextColor),
+                  ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(1.0),
-                decoration: BoxDecoration(
-                    // Border around today's date
-                    color: isTodaysDate ? widget.selectedDigitBorderColor : Colors.transparent,
-                    shape: BoxShape.circle),
-                child: CircleAvatar(
-                  backgroundColor: isSelected ? widget.selectedDigitBackgroundColor : widget.backgroundColor,
-                  radius: 14.0,
-                  child: Text(
-                    '${dateTime.day}',
-                    style:
-                        TextStyle(fontSize: 16.0, color: isSelected ? widget.selectedDigitColor : widget.digitsColor),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.all(1.0),
+                  decoration: BoxDecoration(
+                      // Border around today's date
+                      color: isTodaysDate ? widget.selectedDigitBorderColor : Colors.transparent,
+                      shape: BoxShape.circle),
+                  child: CircleAvatar(
+                    backgroundColor: isSelected ? widget.selectedDigitBackgroundColor : widget.backgroundColor,
+                    radius: 14.0,
+                    child: Text(
+                      '${dateTime.day}',
+                      style:
+                          TextStyle(fontSize: 16.0, color: isSelected ? widget.selectedDigitColor : widget.digitsColor),
+                    ),
                   ),
                 ),
               ),
