@@ -169,26 +169,30 @@ class _WeeklyDatePickerState extends State<WeeklyDatePicker> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(bottom: 4.0),
-                child: Text(
-                  '$weekday',
-                  style: TextStyle(fontSize: 12.0, color: widget.weekdayTextColor),
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: Text(
+                    '$weekday',
+                    style: TextStyle(fontSize: 12.0, color: widget.weekdayTextColor),
+                  ),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(1.0),
-                decoration: BoxDecoration(
-                    // Border around today's date
-                    color: isTodaysDate ? widget.selectedDigitBorderColor : Colors.transparent,
-                    shape: BoxShape.circle),
-                child: CircleAvatar(
-                  backgroundColor: isSelected ? widget.selectedDigitBackgroundColor : widget.backgroundColor,
-                  radius: 14.0,
-                  child: Text(
-                    '${dateTime.day}',
-                    style:
-                        TextStyle(fontSize: 16.0, color: isSelected ? widget.selectedDigitColor : widget.digitsColor),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.all(1.0),
+                  decoration: BoxDecoration(
+                      // Border around today's date
+                      color: isTodaysDate ? widget.selectedDigitBorderColor : Colors.transparent,
+                      shape: BoxShape.circle),
+                  child: CircleAvatar(
+                    backgroundColor: isSelected ? widget.selectedDigitBackgroundColor : widget.backgroundColor,
+                    radius: 14.0,
+                    child: Text(
+                      '${dateTime.day}',
+                      style:
+                          TextStyle(fontSize: 16.0, color: isSelected ? widget.selectedDigitColor : widget.digitsColor),
+                    ),
                   ),
                 ),
               ),
